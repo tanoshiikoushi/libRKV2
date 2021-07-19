@@ -8,6 +8,8 @@ project(libRKV2 VERSION ${lib_version}
 				DESCRIPTION "A library for manipulating RKV2 files"
 				LANGUAGES CXX)
 				
+add_subdirectory(extern/libKoushiCommon)
+include_directories(${CMAKE_SOURCE_DIR}/extern/libKoushiCommon/include)
 add_subdirectory(src)
 
 configure_package_config_file(
