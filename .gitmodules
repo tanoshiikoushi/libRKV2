@@ -1,0 +1,3 @@
+[submodule "extern/libKoushiCommon"]
+	path = extern/libKoushiCommon
+	url = https://github.com/tanoshiikoushi/libKoushiCommon
