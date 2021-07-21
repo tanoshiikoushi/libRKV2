@@ -37,7 +37,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
     u64 name_string_pos = this->metadata_table_offset + (RKV2ENTRY_SIZE * this->entry_count);
 
-    printf("entering entry cycle with curr_file_pos: %.8X - name_string_pos: %.8X\n", curr_file_pos, name_string_pos);
+    printf("entering entry cycle with curr_file_pos: 0x%.8X - name_string_pos: 0x%.8X\n", curr_file_pos, name_string_pos);
     for (u32 i = 0; i < this->entry_count; i++) {
         this->entries[i].entry_name_string_offset = read_32LE(&this->data[curr_file_pos]);
         // next 4 bytes are padding
@@ -48,7 +48,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         curr_file_pos += RKV2ENTRY_SIZE;
 
         u8* name = read_dynamic_string(&this->data[name_string_pos + this->entries[i].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
-        printf("Name: %s - String Offset: %->4X - Entry Offset: %->4X\n", name, this->entries[i].entry_name_string_offset, this->entries[i].entry_offset);
+        printf("Name: %s - String Offset: 0x%.4X - Entry Offset: 0x%.4X\n", name, this->entries[i].entry_name_string_offset, this->entries[i].entry_offset);
         delete name;
     }
     printf("entries complete\n");
@@ -69,7 +69,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
         u8* filepath_name = read_dynamic_string(&this->data[addendum_name_string_pos + this->addendums[j].filepath_addendum_string_offset], BASE_FILEPATHADDENDUM_STRING_SIZE);
         u8* name = read_dynamic_string(&this->data[addendum_name_string_pos + this->addendums[j].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
-        printf("Addendum Name: %s - String Offset: %->8X - Linked Name: %->4X\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
+        printf("Addendum Name: %s - String Offset: 0x%.8X - Linked Name: 0x%.4X\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
         delete filepath_name;
         delete name;
     }
