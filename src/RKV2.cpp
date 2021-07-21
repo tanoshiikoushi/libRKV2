@@ -58,7 +58,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
     u64 addendum_name_string_pos = curr_file_pos + (RKV2FILEPATHADDENDUM_SIZE * this->filepath_addendum_count);
 
-    printf("entering addendum cycle with curr_file_pos: %.8X - addendum_name_string_pos: %.8X\n", curr_file_pos, addendum_name_string_pos);
+    printf("entering addendum cycle with curr_file_pos: 0x%.8X - addendum_name_string_pos: 0x%.8X\n", curr_file_pos, addendum_name_string_pos);
     // now read in the addendums
     for (u32 j = 0; j < this->filepath_addendum_count; j++) {
         this->addendums[j].filepath_addendum_string_offset = read_64LE(&this->data[curr_file_pos]);
@@ -69,7 +69,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
         u8* filepath_name = read_dynamic_string(&this->data[addendum_name_string_pos + this->addendums[j].filepath_addendum_string_offset], BASE_FILEPATHADDENDUM_STRING_SIZE);
         u8* name = read_dynamic_string(&this->data[addendum_name_string_pos + this->addendums[j].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
-        printf("Addendum Name: %s - String Offset: 0x%.8X - Linked Name: 0x%.4X\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
+        printf("Addendum Name: %s - String Offset: 0x%.8X - Linked Name: %s\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
         delete filepath_name;
         delete name;
     }
