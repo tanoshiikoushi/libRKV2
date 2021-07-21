@@ -68,7 +68,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         curr_file_pos += RKV2FILEPATHADDENDUM_SIZE;
 
         u8* filepath_name = read_dynamic_string(&this->data[addendum_name_string_pos + this->addendums[j].filepath_addendum_string_offset], BASE_FILEPATHADDENDUM_STRING_SIZE);
-        u8* name = read_dynamic_string(&this->data[addendum_name_string_pos + this->addendums[j].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
+        u8* name = read_dynamic_string(&this->data[name_string_pos + this->addendums[j].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
         printf("Addendum Name: %s - String Offset: 0x%.8X - Linked Name: %s\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
         delete filepath_name;
         delete name;
