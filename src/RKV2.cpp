@@ -7,13 +7,16 @@
 bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
     // copy into our internal buffer
     this->data = new u8[buf_size];
-    strncpy((char*)this->data, (char*)buf_to_copy, buf_size);
+    memcpy(this->data, buf_to_copy, buf_size);
+    printf("past copy\n");
 
     // header check
     if (read_32BE(this->data) != 0x524B5632) { // "RKV2"
+        printf("header bad");
         delete this->data;
         return false;
     }
+    printf("header good\n");
 
     // read in the following useful info
     this->entry_count = read_32LE(&this->data[0x04]);
@@ -22,16 +25,19 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
     this->filepath_addendum_string_length = read_32LE(&this->data[0x10]);
     this->metadata_table_offset = read_32LE(&this->data[0x14]);
     this->metadata_table_length = read_32LE(&this->data[0x18]);
+    printf("metadata read\n");
 
     // allocate buffers for our entries and addendums
     this->entries = new RKV2Entry[this->entry_count];
     this->addendums = new RKV2FilePathAddendum[this->filepath_addendum_count];
+    printf("buffers alloced\n");
 
     // now read in the entries
     u64 curr_file_pos = this->metadata_table_offset;
 
     u64 name_string_pos = this->metadata_table_offset + (RKV2ENTRY_SIZE * this->entry_count);
 
+    printf("entering entry cycle with curr_file_pos: %.8X - name_string_pos: %.8X\n", curr_file_pos, name_string_pos);
     for (u32 i = 0; i < this->entry_count; i++) {
         this->entries[i].entry_name_string_offset = read_32LE(&this->data[curr_file_pos]);
         // next 4 bytes are padding
@@ -45,12 +51,14 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         printf("Name: %s - String Offset: %->4X - Entry Offset: %->4X\n", name, this->entries[i].entry_name_string_offset, this->entries[i].entry_offset);
         delete name;
     }
+    printf("entries complete\n");
 
     // skip over the size of the entry name string
     curr_file_pos += this->entry_name_string_length;
 
     u64 addendum_name_string_pos = curr_file_pos + (RKV2FILEPATHADDENDUM_SIZE * this->filepath_addendum_count);
 
+    printf("entering addendum cycle with curr_file_pos: %.8X - addendum_name_string_pos: %.8X\n", curr_file_pos, addendum_name_string_pos);
     // now read in the addendums
     for (u32 j = 0; j < this->filepath_addendum_count; j++) {
         this->addendums[j].filepath_addendum_string_offset = read_64LE(&this->data[curr_file_pos]);
@@ -65,7 +73,9 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         delete filepath_name;
         delete name;
     }
+    printf("addendums complete\n");
 
+    printf("all good :)\n");
     return true;
 }
 
