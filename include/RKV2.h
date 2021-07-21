@@ -3,7 +3,7 @@
 #include "types/typedefs.h"
 
 // constants for string buffer sizes
-const u64 RKV2ENTRY_SIZE = 0x18;
+const u64 RKV2ENTRY_SIZE = 0x14;
 const u64 RKV2FILEPATHADDENDUM_SIZE = 0x10;
 
 const u64 BASE_ENTRY_STRING_SIZE = 0x16;
