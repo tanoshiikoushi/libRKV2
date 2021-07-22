@@ -125,6 +125,10 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
         out_size = snprintf(out_buf, 0x100, "Addendum Name: %p - String Offset: 0x%.8X - Linked Name: %p\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
         log_file.write(out_buf, out_size);
+        if (log_file.fail() || log_file.bad()) {
+            log_file << "uh oh\n";
+        }
+        log_file.clear();
 
         log_file << "pre-deletes\n";
 
