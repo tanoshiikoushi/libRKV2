@@ -64,9 +64,10 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
         u8* name = nullptr;
 
-        if (this->entries[i].entry_name_string_offset != 0x0) {
+        if (this->data[name_string_pos + this->entries[i].entry_name_string_offset] != 0x00) {
             name = read_dynamic_string(&this->data[name_string_pos + this->entries[i].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
         } else {
+            log_file << "invalid name";
             name = new u8[0x32];
             strcpy((char*)name, "invalid-name");
         }
@@ -105,19 +106,20 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         curr_file_pos += RKV2FILEPATHADDENDUM_SIZE;
 
         u8* filepath_name = nullptr;
-        if (this->addendums[j].filepath_addendum_string_offset != 0x0) {
+        if (this->data[addendum_name_string_pos + this->addendums[j].filepath_addendum_string_offset] != 0x00) {
             filepath_name = read_dynamic_string(&this->data[addendum_name_string_pos + this->addendums[j].filepath_addendum_string_offset], BASE_FILEPATHADDENDUM_STRING_SIZE);
         } else {
-            filepath_name = new u8[0x02];
-            filepath_name[0x0] = '-';
-            filepath_name[0x1] = 0x00;
+            log_file << "filepath invalid";
+            filepath_name = new u8[0x32];
+            strcpy((char*)filepath_name, "invalid-path");
         }
         log_file << "past filepath_name\n";
 
         u8* name = nullptr;
-        if (this->addendums[j].entry_name_string_offset != 0x0) {
+        if (this->data[name_string_pos + this->addendums[j].entry_name_string_offset] != 0x00) {
             name = read_dynamic_string(&this->data[name_string_pos + this->addendums[j].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
         } else {
+            log_file << "invalid name";
             name = new u8[0x32];
             strcpy((char*)name, "invalid-name");
         }
