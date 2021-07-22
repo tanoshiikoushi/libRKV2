@@ -62,21 +62,20 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
         curr_file_pos += RKV2ENTRY_SIZE;
 
-        u8* name;
+        u8* name = nullptr;
 
         if (this->entries[i].entry_name_string_offset != 0x0) {
             name = read_dynamic_string(&this->data[name_string_pos + this->entries[i].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
         } else {
-            name = new u8[0x02];
-            name[0x0] = '-';
-            name[0x1] = 0x00;
+            name = new u8[0x32];
+            strcpy((char*)name, "invalid-name");
         }
         log_file << "past entry name\n";
 
         out_size = snprintf(out_buf, 0x100, "Name: %s - String Offset: 0x%.4X - Entry Offset: 0x%.4X\n", name, this->entries[i].entry_name_string_offset, this->entries[i].entry_offset);
         log_file.write(out_buf, out_size);
 
-        if (name) {
+        if (name != nullptr) {
             delete[] name;
         }
     }
@@ -105,7 +104,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
         curr_file_pos += RKV2FILEPATHADDENDUM_SIZE;
 
-        u8* filepath_name;
+        u8* filepath_name = nullptr;
         if (this->addendums[j].filepath_addendum_string_offset != 0x0) {
             filepath_name = read_dynamic_string(&this->data[addendum_name_string_pos + this->addendums[j].filepath_addendum_string_offset], BASE_FILEPATHADDENDUM_STRING_SIZE);
         } else {
@@ -115,25 +114,25 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         }
         log_file << "past filepath_name\n";
 
-        u8* name;
+        u8* name = nullptr;
         if (this->addendums[j].entry_name_string_offset != 0x0) {
             name = read_dynamic_string(&this->data[name_string_pos + this->addendums[j].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
         } else {
-            name = new u8[0x02];
-            name[0x0] = '-';
-            name[0x1] = 0x00;
+            name = new u8[0x32];
+            strcpy((char*)name, "invalid-name");
         }
         log_file << "past entry name\n";
 
         out_size = snprintf(out_buf, 0x100, "Addendum Name: %s - String Offset: 0x%.8X - Linked Name: %s\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
         log_file.write(out_buf, out_size);
 
-        log_file << "pre-deletes";
-        if (filepath_name) {
+        log_file << "pre-deletes\n";
+
+        if (filepath_name != nullptr) {
             delete[] filepath_name;
         }
 
-        if (name) {
+        if (name != nullptr) {
             delete[] name;
         }
     }
