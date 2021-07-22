@@ -72,11 +72,11 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         }
         log_file << "past entry name\n";
 
-        out_size = snprintf(out_buf, 0x100, "Name: %s - String Offset: 0x%.4X - Entry Offset: 0x%.4X\n", name, this->entries[i].entry_name_string_offset, this->entries[i].entry_offset);
+        out_size = snprintf(out_buf, 0x100, "Name: %p - String Offset: 0x%.4X - Entry Offset: 0x%.4X\n", name, this->entries[i].entry_name_string_offset, this->entries[i].entry_offset);
         log_file.write(out_buf, out_size);
 
         if (name != nullptr) {
-            delete[] name;
+            delete name;
         }
     }
     log_file << "entries complete\n";
@@ -123,17 +123,17 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         }
         log_file << "past entry name\n";
 
-        out_size = snprintf(out_buf, 0x100, "Addendum Name: %s - String Offset: 0x%.8X - Linked Name: %s\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
+        out_size = snprintf(out_buf, 0x100, "Addendum Name: %p - String Offset: 0x%.8X - Linked Name: %p\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
         log_file.write(out_buf, out_size);
 
         log_file << "pre-deletes\n";
 
         if (filepath_name != nullptr) {
-            delete[] filepath_name;
+            delete filepath_name;
         }
 
         if (name != nullptr) {
-            delete[] name;
+            delete name;
         }
     }
     log_file << "addendums complete\n";
