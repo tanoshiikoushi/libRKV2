@@ -72,7 +72,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         printf("first filepath character: %.2X\n", filepath_name[0]);
         u8* name = read_dynamic_string(&this->data[name_string_pos + this->addendums[j].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
         printf("first name character: %.2X\n", name[0]);
-        printf("Addendum Name: %s - String Offset: 0x%.8X - Linked Name: %s\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
+        printf("Pos: 0x%.8X - String Pos: 0x%.8X - Addendum Name: %s - String Offset: 0x%.8X - Linked Name: %s\n", curr_file_pos, addendum_name_string_pos, filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
         delete filepath_name;
         delete name;
     }
