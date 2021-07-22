@@ -131,10 +131,12 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
         if (filepath_name != nullptr) {
             delete filepath_name;
         }
+        log_file << "deleted filepath_name\n";
 
         if (name != nullptr) {
             delete name;
         }
+        log_file << "delete name\n";
     }
     log_file << "addendums complete\n";
 
