@@ -7,6 +7,7 @@
 bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
     // copy into our internal buffer
     this->data = new u8[buf_size];
+    this->data_size = buf_size;
     memcpy(this->data, buf_to_copy, buf_size);
     printf("past copy\n");
 
@@ -47,7 +48,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
         curr_file_pos += RKV2ENTRY_SIZE;
 
-        printf("Name: %s - String Offset: 0x%.4X - Entry Offset: 0x%.4X\n", &this->data[name_string_pos + this->entries[i].entry_name_string_offset], this->entries[i].entry_name_string_offset, this->entries[i].entry_offset);
+        printf("Entry String Offset: 0x%.8X - Entry Offset: 0x%.8X\n", name_string_pos + this->entries[i].entry_name_string_offset, this->entries[i].entry_offset);
     }
     printf("entries complete\n");
 
@@ -65,7 +66,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
 
         curr_file_pos += RKV2FILEPATHADDENDUM_SIZE;
 
-        printf("File Size: 0x%.8X - String Pos: 0x%.8X - Addendum Name: %s - Linked Name: %s\n", buf_size, addendum_name_string_pos + this->addendums[j].filepath_addendum_string_offset, &this->data[addendum_name_string_pos + this->addendums[j].filepath_addendum_string_offset], &this->data[name_string_pos + this->addendums[j].entry_name_string_offset]);
+        printf("Addendum String Pos: 0x%.8X\n", buf_size, addendum_name_string_pos + this->addendums[j].filepath_addendum_string_offset);
     }
     printf("addendums complete\n");
 
