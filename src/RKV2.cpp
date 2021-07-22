@@ -71,6 +71,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
             name[0x0] = '-';
             name[0x1] = 0x00;
         }
+        log_file << "past entry name\n";
 
         out_size = snprintf(out_buf, 0x100, "Name: %s - String Offset: 0x%.4X - Entry Offset: 0x%.4X\n", name, this->entries[i].entry_name_string_offset, this->entries[i].entry_offset);
         log_file.write(out_buf, out_size);
@@ -110,6 +111,8 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
             filepath_name[0x0] = '-';
             filepath_name[0x1] = 0x00;
         }
+        log_file << "past filepath_name\n";
+
         u8* name;
         if (this->addendums[j].entry_name_string_offset != 0x0) {
             name = read_dynamic_string(&this->data[name_string_pos + this->addendums[j].entry_name_string_offset], BASE_ENTRY_STRING_SIZE);
@@ -118,6 +121,8 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
             name[0x0] = '-';
             name[0x1] = 0x00;
         }
+        log_file << "past entry name\n";
+
         out_size = snprintf(out_buf, 0x100, "Addendum Name: %s - String Offset: 0x%.8X - Linked Name: %s\n", filepath_name, this->addendums[j].filepath_addendum_string_offset, name);
         log_file.write(out_buf, out_size);
 
@@ -129,6 +134,7 @@ bool RKV2File::load(const u8* buf_to_copy, const u64 buf_size) {
     log_file << "all good :)\n";
 
     log_file.close();
+    delete out_buf;
 
     return true;
 }
