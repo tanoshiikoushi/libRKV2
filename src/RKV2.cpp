@@ -98,7 +98,6 @@ bool RKV2File::extract(const u8* output_path) {
 
     // remove trailing slash for directory creation
     if (out_path.back() == '/' || out_path.back() == '\\') {
-        printf("removing slash from end of in path\n");
         out_path.pop_back();
     }
 
