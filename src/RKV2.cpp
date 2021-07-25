@@ -81,7 +81,7 @@ RKV2Entry* RKV2File::get_entry_by_string_offset(u32 off) {
 
     // we just loop until we find it
     for (int i = 0; i < this->entry_count; i++) {
-        if (this->entries[i].entry_offset == off) {
+        if (this->entries[i].entry_name_string_offset == off) {
             ret = &(this->entries[i]);
             break;
         }
