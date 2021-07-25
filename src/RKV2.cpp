@@ -123,7 +123,7 @@ bool RKV2File::extract(const u8* output_path) {
     bool file_path_assigned = false;
 
     // first, we iterate through the addendums
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < this->filepath_addendum_count; i++) {
         if (!entries_touched[this->addendums[i].entry_name_string_offset] &&
             this->data[this->entry_name_string_pos + this->addendums[i].entry_name_string_offset] != 0x0) {
 
@@ -177,7 +177,7 @@ bool RKV2File::extract(const u8* output_path) {
 
     bool touched = false;
     // now, we iterate through any remaining entries
-    for (int j = 0; j < 10; j++) {
+    for (int j = 0; j < this->entry_count; j++) {
         touched = entries_touched[this->entries[j].entry_name_string_offset];
         if(!touched &&
             this->data[this->entry_name_string_pos + this->entries[j].entry_name_string_offset] != 0x0) {
