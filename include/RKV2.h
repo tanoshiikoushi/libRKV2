@@ -40,8 +40,14 @@ class RKV2File {
         u32 metadata_table_offset;
         u32 metadata_table_length; // we don't really use this, but it doesn't hurt to track so we can update it properly later
 
+        u64 entry_name_string_pos;
+        u64 filepath_addendum_string_pos;
+
         RKV2Entry* entries;
         RKV2FilePathAddendum* addendums;
+
+        // private functions used internally
+        RKV2Entry* get_entry_by_string_offset(u32 off); // this is inefficient, but it extracts nicely
 
     // these are public since you should use the functions I provide
     public:
