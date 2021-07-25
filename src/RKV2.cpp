@@ -98,11 +98,12 @@ bool RKV2File::extract(const u8* output_path) {
 
     // remove trailing slash for directory creation
     if (out_path.back() == '/' || out_path.back() == '\\') {
-        printf("removing slash from end of in path");
+        printf("removing slash from end of in path\n");
         out_path.pop_back();
     }
 
     if (!std::filesystem::create_directories(out_path)) {
+        printf("create out_path failure with out_path: %s\n", out_path.c_str());
         return false;
     }
 
@@ -130,6 +131,7 @@ bool RKV2File::extract(const u8* output_path) {
                 dir_path = file_path.substr(0, file_path.find_last_of("/\\"));
 
                 if (!std::filesystem::create_directories(out_path + dir_path)) {
+                    printf("create dir_path failure with out_path: %s - dir_path: %s\n", out_path.c_str(), dir_path.c_str());
                     delete entries_touched;
                     return false;
                 }
@@ -142,6 +144,7 @@ bool RKV2File::extract(const u8* output_path) {
 
             RKV2Entry* curr_entry = this->get_entry_by_string_offset(this->addendums[i].entry_name_string_offset);
             if (curr_entry == nullptr) {
+                printf("you shouldn't be seeing this!\n");
                 delete entries_touched;
                 return false;
             }
@@ -154,6 +157,7 @@ bool RKV2File::extract(const u8* output_path) {
             }
 
             if (!out_file) {
+                printf("failed to open file for addendum entry\n");
                 delete entries_touched;
                 return false;
             }
@@ -179,6 +183,7 @@ bool RKV2File::extract(const u8* output_path) {
             out_file.open(out_path + file_name, std::ios_base::out | std::ios_base::binary);
 
             if (!out_file) {
+                printf("failed to open file for entry");
                 delete entries_touched;
                 return false;
             }
