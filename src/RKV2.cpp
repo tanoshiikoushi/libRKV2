@@ -105,7 +105,7 @@ bool RKV2File::extract(const u8* output_path) {
     std::error_code err;
     std::filesystem::create_directories(out_path, err);
 
-    if (!err) {
+    if (err) {
         printf("create out_path failure with out_path: %s\n", out_path.c_str());
         return false;
     }
@@ -135,7 +135,7 @@ bool RKV2File::extract(const u8* output_path) {
 
                 std::filesystem::create_directories(out_path + dir_path, err);
 
-                if (!err) {
+                if (err) {
                     printf("create dir_path failure with out_path: %s - dir_path: %s\n", out_path.c_str(), dir_path.c_str());
                     delete entries_touched;
                     return false;
