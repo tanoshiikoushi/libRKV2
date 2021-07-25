@@ -102,8 +102,8 @@ bool RKV2File::extract(const u8* output_path) {
         out_path.pop_back();
     }
 
-    std::error_code err();
-    std::filesystem::create_directories(out_path, &err);
+    std::error_code err;
+    std::filesystem::create_directories(out_path, err);
 
     if (!err) {
         printf("create out_path failure with out_path: %s\n", out_path.c_str());
@@ -133,7 +133,7 @@ bool RKV2File::extract(const u8* output_path) {
                 file_path.assign((char*)&(this->data[this->filepath_addendum_string_pos + this->addendums[i].filepath_addendum_string_offset]));
                 dir_path = file_path.substr(0, file_path.find_last_of("/\\"));
 
-                std::filesystem::create_directories(out_path + dir_path, &err);
+                std::filesystem::create_directories(out_path + dir_path, err);
 
                 if (!err) {
                     printf("create dir_path failure with out_path: %s - dir_path: %s\n", out_path.c_str(), dir_path.c_str());
