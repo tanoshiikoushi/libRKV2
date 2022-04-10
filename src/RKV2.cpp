@@ -155,7 +155,7 @@ bool RKV2File::extract(const u8* output_path) {
 
             if (file_path_assigned) {
                 out_file.open(out_path + file_path, std::ios_base::out | std::ios_base::binary);
-                printf("File: %s\n", file_name.c_str());
+                printf("File: %s\n", file_path.c_str());
             } else {
                 file_name.assign((char*)&(this->data[this->entry_name_string_pos + curr_entry->entry_name_string_offset]));
                 printf("File: %s\n", file_name.c_str());
